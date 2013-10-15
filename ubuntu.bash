@@ -43,14 +43,14 @@ function configApache
 
 function configGraphite
 {
-    mv /opt/graphite/conf/carbon.conf.example /opt/graphite/conf/carbon.conf
-    mv /opt/graphite/conf/storage-schemas.conf.example /opt/graphite/conf/storage-schemas.conf
-    mv /opt/graphite/conf/graphite.wsgi.example /opt/graphite/conf/graphite.wsgi
+    mv '/opt/graphite/conf/carbon.conf.example' '/opt/graphite/conf/carbon.conf'
+    mv '/opt/graphite/conf/storage-schemas.conf.example' '/opt/graphite/conf/storage-schemas.conf'
+    mv '/opt/graphite/conf/graphite.wsgi.example' '/opt/graphite/conf/graphite.wsgi'
 
-    cd /opt/graphite/webapp/graphite
+    cd '/opt/graphite/webapp/graphite'
     python manage.py syncdb
 
-    mv /opt/graphite/webapp/graphite/local_settings.py.example /opt/graphite/webapp/graphite/local_settings.py
+    mv '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py'
 }
 
 function startServers
