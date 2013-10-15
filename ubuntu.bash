@@ -37,8 +37,6 @@ function configApache
     local newWSGISocketPrefix="$(escapeSearchPattern 'WSGISocketPrefix /var/run/apache2/wsgi')"
 
     sed "s@${oldWSGISocketPrefix}@${newWSGISocketPrefix}@g" '/opt/graphite/examples/example-graphite-vhost.conf' > '/etc/apache2/sites-available/default'
-
-    chown -R www-data:www-data '/opt/graphite/storage'
 }
 
 function configGraphite
@@ -51,6 +49,8 @@ function configGraphite
     python manage.py syncdb
 
     mv '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py'
+
+    chown -R www-data:www-data '/opt/graphite/storage'
 }
 
 function startServers
