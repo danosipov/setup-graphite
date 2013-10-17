@@ -5,6 +5,8 @@ function escapeSearchPattern
 
 function installDependencies
 {
+    apt-get update
+
     apt-get -y install apache2
     apt-get -y install erlang-os-mon
     apt-get -y install erlang-snmp
