@@ -48,7 +48,7 @@ function configGraphite
     mv '/opt/graphite/conf/storage-schemas.conf.example' '/opt/graphite/conf/storage-schemas.conf'
     mv '/opt/graphite/conf/graphite.wsgi.example' '/opt/graphite/conf/graphite.wsgi'
 
-    cp "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/config/initial_data.json" '/opt/graphite/webapp/graphite/initial_data.json'
+    cp "${appPath}/config/initial_data.json" '/opt/graphite/webapp/graphite/initial_data.json'
     cd '/opt/graphite/webapp/graphite'
     python manage.py syncdb --noinput
 
@@ -67,6 +67,8 @@ function startServers
 
 function main
 {
+    appPath="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
     installDependencies
     installGraphite
 
