@@ -3,6 +3,12 @@ function escapeSearchPattern
     echo "$(echo "${1}" | sed "s@\[@\\\\[@g")"
 }
 
+function updateTimeZone
+{
+    cp '/usr/share/zoneinfo/America/Los_Angeles' '/etc/localtime'
+    echo 'America/Los_Angeles' > '/etc/timezone'
+}
+
 function installDependencies
 {
     apt-get update
@@ -65,6 +71,8 @@ function startServers
 
 function main
 {
+    updateTimeZone
+
     installDependencies
     installGraphite
 
