@@ -1,0 +1,6 @@
+#!/bin/bash
+
+/etc/init.d/apache2 stop
+
+cd /opt/graphite
+./bin/carbon-cache.py stop

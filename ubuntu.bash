@@ -1,3 +1,5 @@
+#!/bin/bash
+
 function escapeSearchPattern
 {
     echo "$(echo "${1}" | sed "s@\[@\\\\[@g")"
@@ -57,14 +59,6 @@ function configGraphite
     chown -R www-data:www-data '/opt/graphite/storage'
 }
 
-function startServers
-{
-    /etc/init.d/apache2 restart
-
-    cd /opt/graphite
-    ./bin/carbon-cache.py start
-}
-
 function main
 {
     appPath="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -75,7 +69,7 @@ function main
     configApache
     configGraphite
 
-    startServers
+    "${appPath}/bin/start"
 }
 
 main "${@}"
