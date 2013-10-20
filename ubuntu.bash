@@ -64,7 +64,7 @@ function configGraphite
         expect "Password: "
         send -- "${2}\r"
         expect "Password (again): "
-        send -- "${2}\r\r"
+        send -- "${2}\r"
         expect eof
 DONE
 
