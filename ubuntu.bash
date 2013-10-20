@@ -90,9 +90,9 @@ function displayUsage
     echo -e "    ${scriptName} -h -l <LOGIN> -p <PASSWORD> -e <EMAIL>\n"
     echo    "DESCRIPTION :"
     echo    "    -h    Help page"
-    echo    "    -l    Super user's login"
-    echo    "    -p    Super user's password"
-    echo    "    -e    Super user's email"
+    echo    "    -l    Super user's login (require)"
+    echo    "    -p    Super user's password (require)"
+    echo    "    -e    Super user's email (require)"
     echo -e "\033[1;36m"
     echo    "EXAMPLES :"
     echo    "    ${scriptName} -h"
@@ -140,6 +140,7 @@ function main
 
         restartServers
     else
+        error 'ERROR: login, password, or email not found!'
         displayUsage
     fi
 }
