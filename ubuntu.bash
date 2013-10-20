@@ -54,14 +54,14 @@ function configGraphite
 
     cd '/opt/graphite/webapp/graphite'
     python manage.py syncdb --noinput
-    python manage.py createsuperuser --username=root --email=test@domain.com --noinput
+    python manage.py createsuperuser --username="${1}" --email="${3}" --noinput
 
     expect << DONE
-        spawn python manage.py changepassword root 
+        spawn python manage.py changepassword "${1}"
         expect "Password: "
-        send -- "test\r"
+        send -- "${2}\r"
         expect "Password (again): "
-        send -- "test\r"
+        send -- "${2}\r"
         expect eof
 DONE
 
@@ -78,7 +78,7 @@ function main
     installGraphite
 
     configApache
-    configGraphite
+    configGraphite "${1}" "${2}" "${3}"
 
     "${appPath}/bin/restart"
 }
