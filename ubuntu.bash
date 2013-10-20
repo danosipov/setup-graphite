@@ -5,8 +5,36 @@ function escapeSearchPattern
     echo "$(echo "${1}" | sed "s@\[@\\\\[@g")"
 }
 
+function printHeader
+{
+    echo -e "\n\033[1;33m>>>>>>>>>> \033[1;4;35m${1}\033[0m \033[1;33m<<<<<<<<<<\033[0m\n"
+}
+
+function error
+{
+    echo -e "\033[1;31m${1}\033[0m"
+    exit 1
+}
+
+function trimString
+{
+    echo "${1}" | sed -e 's/^ *//g' -e 's/ *$//g'
+}
+
+function isEmptyString
+{
+    if [[ "$(trimString ${1})" = '' ]]
+    then
+        echo 'true'
+    else
+        echo 'false'
+    fi
+}
+
 function installDependencies
 {
+    printHeader 'INSTALL DEPENDENCIES'
+
     apt-get update
     apt-get -y upgrade
 
@@ -33,6 +61,8 @@ function installDependencies
 
 function installGraphite
 {
+    printHeader 'INSTALL GRAPHITE'
+
     pip install carbon
     pip install graphite-web
     pip install whisper
@@ -40,6 +70,8 @@ function installGraphite
 
 function configApache
 {
+    printHeader 'CONFIG APACHE'
+
     local oldWSGISocketPrefix="$(escapeSearchPattern 'WSGISocketPrefix run/wsgi')"
     local newWSGISocketPrefix="$(escapeSearchPattern 'WSGISocketPrefix /var/run/apache2/wsgi')"
 
@@ -48,6 +80,8 @@ function configApache
 
 function configGraphite
 {
+    printHeader 'CONFIG GRAPHITE'
+
     mv '/opt/graphite/conf/carbon.conf.example' '/opt/graphite/conf/carbon.conf'
     mv '/opt/graphite/conf/storage-schemas.conf.example' '/opt/graphite/conf/storage-schemas.conf'
     mv '/opt/graphite/conf/graphite.wsgi.example' '/opt/graphite/conf/graphite.wsgi'
@@ -70,17 +104,72 @@ DONE
     chown -R www-data:www-data '/opt/graphite/storage'
 }
 
+function restartServers
+{
+    printHeader 'RESTART SERVERS'
+
+    "${appPath}/bin/restart"
+}
+
+function displayUsage
+{
+    local scriptName="$(basename ${0})"
+
+    echo -e "\033[1;35m"
+    echo    "SYNOPSIS :"
+    echo -e "    ${scriptName} -h -l <LOGIN> -p <PASSWORD> -e <EMAIL>\n"
+    echo    "DESCRIPTION :"
+    echo    "    -h    Help page"
+    echo    "    -l    Super user's login"
+    echo    "    -p    Super user's password"
+    echo    "    -e    Super user's email"
+    echo -e "\033[1;36m"
+    echo    "EXAMPLES :"
+    echo    "    ${scriptName} -h"
+    echo    "    ${scriptName} -l 'root' -p 'foo' -e 'root@domain.com'"
+    echo -e "\033[0m"
+
+    exit 1
+}
+
 function main
 {
     appPath="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-    installDependencies
-    installGraphite
+    while getopts ":hl:p:e:" option
+    do
+        case "${option}" in
+            h)
+               displayUsage
+               ;;
+            l)
+               local login="${OPTARG}"
+               ;;
+            p)
+               local password="${OPTARG}"
+               ;;
+            e)
+               local email="${OPTARG}"
+               ;;
+            *)
+               ;;
+        esac
+    done
 
-    configApache
-    configGraphite "${1}" "${2}" "${3}"
+    OPTIND=1
 
-    "${appPath}/bin/restart"
+    if [[ "$(isEmptyString ${login})" = 'false' && "$(isEmptyString ${password})" = 'false' && "$(isEmptyString ${email})" = 'false' ]]
+    then
+        installDependencies
+        installGraphite
+
+        configApache
+        configGraphite "${login}" "${password}" "${email}"
+
+        restartServers
+    else
+        displayUsage
+    fi
 }
 
 main "${@}"
