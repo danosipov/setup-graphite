@@ -106,7 +106,7 @@ function main
 {
     appPath="$(cd "$(dirname "${0}")" && pwd)"
 
-    source "${appPath}/lib/util" || exit 1
+    source "${appPath}/lib/util.bash" || exit 1
 
     while getopts ":hl:p:e:" option
     do
