@@ -59,7 +59,6 @@ function configGraphite
     empty -f -i in -o out python manage.py changepassword root 
     empty -w -i out -o in "Password: " "test\n"
     empty -w -i out -o in "Password (again): " "test\n"
-    empty -s -o in "exit\n"
 
     mv '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py'
 
@@ -76,7 +75,7 @@ function main
     configApache
     configGraphite
 
-    "${appPath}/bin/start"
+    "${appPath}/bin/restart"
 }
 
 main "${@}"
