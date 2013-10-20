@@ -100,6 +100,7 @@ function configGraphite
 DONE
 
     mv '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py'
+    echo
 
     chown -R www-data:www-data '/opt/graphite/storage'
 }
@@ -134,7 +135,7 @@ function displayUsage
 
 function main
 {
-    appPath="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    appPath="$(cd "$(dirname "${0}")" && pwd)"
 
     while getopts ":hl:p:e:" option
     do
