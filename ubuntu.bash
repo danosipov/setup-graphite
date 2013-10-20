@@ -26,7 +26,7 @@ function installDependencies
     apt-get -y install rabbitmq-server
     apt-get -y install sqlite3
 
-    apt-get -y install empty-expect
+    apt-get -y install expect
 
     pip install django-tagging
 }
@@ -56,9 +56,14 @@ function configGraphite
     python manage.py syncdb --noinput
     python manage.py createsuperuser --username=root --email=test@domain.com --noinput
 
-    empty -f -i in -o out python manage.py changepassword root 
-    empty -w -i out -o in "Password: " "test\n"
-    empty -w -i out -o in "Password (again): " "test\n"
+    expect << DONE
+        spawn python manage.py changepassword root 
+        expect "Password: "
+        send -- "test\r"
+        expect "Password (again): "
+        send -- "test\r"
+        expect eof
+DONE
 
     mv '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py'
 
