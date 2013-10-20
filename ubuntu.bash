@@ -64,13 +64,11 @@ function configGraphite
         expect "Password: "
         send -- "${2}\r"
         expect "Password (again): "
-        send -- "${2}\r"
+        send -- "${2}\r\r"
         expect eof
 DONE
 
     mv '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py'
-    echo
-
     chown -R www-data:www-data '/opt/graphite/storage'
 }
 
@@ -132,7 +130,7 @@ function main
 
     if [[ "$(isEmptyString ${login})" = 'false' && "$(isEmptyString ${password})" = 'false' && "$(isEmptyString ${email})" = 'false' ]]
     then
-        checkUser
+        checkRequireRootUser
 
         installDependencies
         installGraphite

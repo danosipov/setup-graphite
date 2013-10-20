@@ -30,7 +30,7 @@ function isEmptyString
     fi
 }
 
-function checkUser
+function checkRequireRootUser
 {
     if [[ "$(whoami)" != 'root' ]]
     then
