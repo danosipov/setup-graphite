@@ -32,7 +32,7 @@ function isEmptyString
 
 function checkUser
 {
-    if [[ "$(whoami)" = 'root' ]]
+    if [[ "$(whoami)" != 'root' ]]
     then
         error "ERROR: please run this program as 'root'"
         exit 1
