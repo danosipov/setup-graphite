@@ -29,3 +29,12 @@ function isEmptyString
         echo 'false'
     fi
 }
+
+function checkUser
+{
+    if [[ "$(whoami)" = 'root' ]]
+    then
+        error "ERROR: please run this program as 'root'"
+        exit 1
+    fi
+}
