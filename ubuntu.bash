@@ -108,7 +108,7 @@ function main
 
     source "${appPath}/lib/util.bash" || exit 1
 
-    while getopts ":hl:p:e:" option
+    while getopts ':hl:p:e:' option
     do
         case "${option}" in
             h)
