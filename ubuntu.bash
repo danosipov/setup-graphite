@@ -108,8 +108,6 @@ function main
 
     source "${appPath}/lib/util.bash" || exit 1
 
-    checkUser
-
     while getopts ':hl:p:e:' option
     do
         case "${option}" in
@@ -134,6 +132,8 @@ function main
 
     if [[ "$(isEmptyString ${login})" = 'false' && "$(isEmptyString ${password})" = 'false' && "$(isEmptyString ${email})" = 'false' ]]
     then
+        checkUser
+
         installDependencies
         installGraphite
 
