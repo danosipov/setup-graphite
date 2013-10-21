@@ -144,5 +144,5 @@ function main
         displayUsage
     fi
 }
-echo "'${@}'" > /tmp/test.log
+
 main "${@}"
