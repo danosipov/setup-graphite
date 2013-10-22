@@ -94,7 +94,7 @@ function displayUsage
     echo -e "\033[1;36m"
     echo    "EXAMPLES :"
     echo    "    ${scriptName} -h"
-    echo    "    ${scriptName} -l 'root' -p 'foo' -e 'root@domain.com'"
+    echo    "    ${scriptName} -l 'root' -p 'root' -e 'root@localhost.com'"
     echo -e "\033[0m"
 
     exit 1
@@ -128,21 +128,27 @@ function main
 
     OPTIND=1
 
-    if [[ "$(isEmptyString ${login})" = 'false' && "$(isEmptyString ${password})" = 'false' && "$(isEmptyString ${email})" = 'false' ]]
+    if [[ "$(isEmptyString ${login})" = 'true' || "$(isEmptyString ${password})" = 'true' || "$(isEmptyString ${email})" = 'true' ]]
     then
-        checkRequireRootUser
-
-        installDependencies
-        installGraphite
-
-        configApache
-        configGraphite "${login}" "${password}" "${email}"
-
-        restartServers
-    else
         error 'ERROR: login, password, or email not found!'
         displayUsage
     fi
+
+    if [[ "$(isValidEmail ${email})" = 'false' ]]
+    then
+        error 'ERROR: invalid email!'
+        exit 1
+    fi
+
+    checkRequireRootUser
+
+    installDependencies
+    installGraphite
+
+    configApache
+    configGraphite "${login}" "${password}" "${email}"
+
+    restartServers
 }
 
 main "${@}"

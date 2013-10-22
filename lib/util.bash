@@ -30,6 +30,16 @@ function isEmptyString
     fi
 }
 
+function isValidEmail
+{
+    if [[ "${1}" =~ "^[a-z0-9!#\$%&'*+/=?^_\`{|}~-]+(\.[a-z0-9!#$%&'*+/=?^_\`{|}~-]+)*@([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)+[a-z0-9]([a-z0-9-]*[a-z0-9])?\$" ]]
+    then
+        echo 'true'
+    else
+        echo 'false'
+    fi
+}
+
 function checkRequireRootUser
 {
     if [[ "$(whoami)" != 'root' ]]
