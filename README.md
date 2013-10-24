@@ -1,6 +1,7 @@
 setup-graphite
 ==============
 
+```
 $ ./ubuntu.bash -h
 
 SYNOPSIS :
@@ -15,3 +16,4 @@ DESCRIPTION :
 EXAMPLES :
     ubuntu.bash -h
     ubuntu.bash -l 'root' -p 'root' -e 'root@localhost.com'
+```
