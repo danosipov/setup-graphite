@@ -9,9 +9,9 @@ SYNOPSIS :
 
 DESCRIPTION :
     -h    Help page
-    -l    Super user's login (require)
-    -p    Super user's password (require)
-    -e    Super user's email (require)
+    -l    Graphite Browser admin-user's login (require)
+    -p    Graphite Browser admin-user's password (require)
+    -e    Graphite Browser admin-user's email (require)
 
 EXAMPLES :
     ubuntu.bash -h
