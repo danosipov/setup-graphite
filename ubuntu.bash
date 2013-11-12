@@ -35,6 +35,7 @@ function installGraphite
     pip install carbon
     pip install graphite-web
     pip install whisper
+    pip install Twisted==11.1.0
 }
 
 function configApache
