@@ -2,7 +2,7 @@
 
 function escapeSearchPattern
 {
-    echo "$(echo "${1}" | sed "s@\[@\\\\[@g" | sed "s@\*@\\\\*@g")"
+    echo "$(echo "${1}" | sed "s@\[@\\\\[@g" | sed "s@\*@\\\\*@g" | sed "s@\%@\\\\%@g")"
 }
 
 function printHeader
