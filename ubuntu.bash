@@ -15,7 +15,6 @@ function installDependencies
     apt-get -y install memcached
     apt-get -y install python-cairo-dev
     apt-get -y install python-dev
-    apt-get -y install python-django
     apt-get -y install python-ldap
     apt-get -y install python-memcache
     apt-get -y install python-pip
@@ -36,6 +35,7 @@ function installGraphite
     pip install graphite-web
     pip install whisper
     pip install Twisted==11.1.0
+    pip install django==1.5
 }
 
 function configApache
