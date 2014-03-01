@@ -2,18 +2,18 @@ setup-graphite
 ==============
 
 ```
-$ ./ubuntu.bash -h
+$ ./ubuntu.bash 
 
 SYNOPSIS :
-    ubuntu.bash -h -l <LOGIN> -p <PASSWORD> -e <EMAIL>
+    ubuntu.bash --help --login <LOGIN> --password <PASSWORD> --email <EMAIL>
 
 DESCRIPTION :
-    -h    Help page
-    -l    Graphite Browser admin-user's login (require)
-    -p    Graphite Browser admin-user's password (require)
-    -e    Graphite Browser admin-user's email (require)
+    --help        Help page
+    --login       Graphite Browser admin-user's login (require)
+    --password    Graphite Browser admin-user's password (require)
+    --email       Graphite Browser admin-user's email (require)
 
 EXAMPLES :
-    ubuntu.bash -h
-    ubuntu.bash -l 'root' -p 'root' -e 'root@localhost.com'
+    ./ubuntu.bash --help
+    ./ubuntu.bash --login 'root' --password 'root' --email 'root@localhost.com'
 ```
