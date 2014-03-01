@@ -42,7 +42,9 @@ function configApache
     local oldWSGISocketPrefix="$(escapeSearchPattern 'WSGISocketPrefix run/wsgi')"
     local newWSGISocketPrefix="$(escapeSearchPattern 'WSGISocketPrefix /var/run/apache2/wsgi')"
 
-    sed "s@${oldWSGISocketPrefix}@${newWSGISocketPrefix}@g" '/opt/graphite/examples/example-graphite-vhost.conf' > '/etc/apache2/sites-available/default'
+    sed "s@${oldWSGISocketPrefix}@${newWSGISocketPrefix}@g" \
+        '/opt/graphite/examples/example-graphite-vhost.conf' \
+        > '/etc/apache2/sites-available/default'
 }
 
 function configGraphite
@@ -166,7 +168,8 @@ function main
         esac
     done
 
-    if [[ "$(isEmptyString ${login})" = 'true' || "$(isEmptyString ${password})" = 'true' || "$(isEmptyString ${email})" = 'true' ]]
+    if [[ "$(isEmptyString ${login})" = 'true' || "$(isEmptyString ${password})" = 'true' ||
+          "$(isEmptyString ${email})" = 'true' ]]
     then
         if [[ ${optCount} -gt 0 ]]
         then
