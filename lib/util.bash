@@ -76,7 +76,7 @@ function safeMoveFile()
     then
         if [[ -f "${destinationFilePath}" ]]
         then
-            mv "${destinationFilePath}" "${destinationFilePath}.BAK"
+            mv "${destinationFilePath}" "${destinationFilePath}_$(date +%m%d%Y)_$(date +%H%M%S).BAK"
         fi
 
         mv "${sourceFilePath}" "${destinationFilePath}"
