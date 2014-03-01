@@ -42,9 +42,18 @@ function configApache()
     local oldWSGISocketPrefix="$(escapeSearchPattern 'WSGISocketPrefix run/wsgi')"
     local newWSGISocketPrefix="$(escapeSearchPattern 'WSGISocketPrefix /var/run/apache2/wsgi')"
 
+    if [[ -f '/etc/apache2/sites-available/000-default.conf' ]]
+    then
+        local defaultConfigFileName='000-default.conf'
+    else
+        local defaultConfigFileName='default'
+    fi
+
     sed "s@${oldWSGISocketPrefix}@${newWSGISocketPrefix}@g" \
         '/opt/graphite/examples/example-graphite-vhost.conf' \
-        > '/etc/apache2/sites-available/default'
+        > "/opt/graphite/examples/${defaultConfigFileName}"
+
+    $(safeMoveFile "/opt/graphite/examples/${defaultConfigFileName}" "/etc/apache2/sites-available/${defaultConfigFileName}")
 }
 
 function configGraphite()
@@ -78,7 +87,7 @@ DONE
 
 function configUpstart()
 {
-    cp "${appPath}/conf/upstart/carbon-cache.conf" '/etc/init'
+    $(safeCopyFile "${appPath}/conf/upstart/carbon-cache.conf" '/etc/init')
 }
 
 function restartServers()

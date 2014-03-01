@@ -50,3 +50,35 @@ function checkRequireRootUser()
         exit 1
     fi
 }
+
+function safeCopyFile()
+{
+    local sourceFilePath="${1}"
+    local destinationFilePath="${2}"
+
+    if [[ -f "${sourceFilePath}" ]]
+    then
+        if [[ -f "${destinationFilePath}" ]]
+        then
+            mv "${destinationFilePath}" "${destinationFilePath}.BAK"
+        fi
+
+        cp "${sourceFilePath}" "${destinationFilePath}"
+    fi
+}
+
+function safeMoveFile()
+{
+    local sourceFilePath="${1}"
+    local destinationFilePath="${2}"
+
+    if [[ -f "${sourceFilePath}" ]]
+    then
+        if [[ -f "${destinationFilePath}" ]]
+        then
+            mv "${destinationFilePath}" "${destinationFilePath}.BAK"
+        fi
+
+        mv "${sourceFilePath}" "${destinationFilePath}"
+    fi
+}
