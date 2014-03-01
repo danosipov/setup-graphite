@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function installDependencies
+function installDependencies()
 {
     printHeader 'INSTALLING DEPENDENCIES'
 
@@ -23,7 +23,7 @@ function installDependencies
     apt-get install -y sqlite3
 }
 
-function installGraphite
+function installGraphite()
 {
     printHeader 'INSTALLING GRAPHITE'
 
@@ -35,7 +35,7 @@ function installGraphite
     pip install django-tagging
 }
 
-function configApache
+function configApache()
 {
     printHeader 'CONFIGURING APACHE'
 
@@ -47,7 +47,7 @@ function configApache
         > '/etc/apache2/sites-available/default'
 }
 
-function configGraphite
+function configGraphite()
 {
     local login="${1}"
     local password="${2}"
@@ -76,14 +76,14 @@ DONE
     chown -R 'www-data:www-data' '/opt/graphite/storage'
 }
 
-function restartServers
+function restartServers()
 {
     printHeader 'RESTARTING SERVERS'
 
     "${appPath}/bin/restart"
 }
 
-function displayUsage
+function displayUsage()
 {
     local scriptName="$(basename ${0})"
 
@@ -122,7 +122,7 @@ function runInstallation()
     restartServers
 }
 
-function main
+function main()
 {
     appPath="$(cd "$(dirname "${0}")" && pwd)"
     source "${appPath}/lib/util.bash" || exit 1
