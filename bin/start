@@ -1,6 +1,5 @@
 #!/bin/bash
 
-/etc/init.d/apache2 start
-
-cd /opt/graphite
-./bin/carbon-cache.py start
+service memcached start
+service apache2 start
+start carbon-cache

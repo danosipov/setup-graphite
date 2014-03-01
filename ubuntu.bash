@@ -76,6 +76,11 @@ DONE
     chown -R 'www-data:www-data' '/opt/graphite/storage'
 }
 
+function configUpstart()
+{
+    cp "${appPath}/conf/upstart/carbon-cache.conf" '/etc/init'
+}
+
 function restartServers()
 {
     printHeader 'RESTARTING SERVERS'
@@ -120,6 +125,7 @@ function runInstallation()
 
     configApache
     configGraphite "${login}" "${password}" "${email}"
+    configUpstart
 
     restartServers
 }
