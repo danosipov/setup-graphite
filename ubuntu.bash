@@ -65,10 +65,10 @@ function configGraphite()
 
     printHeader 'CONFIGURING GRAPHITE'
 
-    $(saveMoveFile '/opt/graphite/conf/carbon.conf.example' '/opt/graphite/conf/carbon.conf')
-    $(saveMoveFile '/opt/graphite/conf/storage-schemas.conf.example' '/opt/graphite/conf/storage-schemas.conf')
-    $(saveMoveFile '/opt/graphite/conf/graphite.wsgi.example' '/opt/graphite/conf/graphite.wsgi')
-    $(saveMoveFile '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py')
+    $(safeMoveFile '/opt/graphite/conf/carbon.conf.example' '/opt/graphite/conf/carbon.conf')
+    $(safeMoveFile '/opt/graphite/conf/storage-schemas.conf.example' '/opt/graphite/conf/storage-schemas.conf')
+    $(safeMoveFile '/opt/graphite/conf/graphite.wsgi.example' '/opt/graphite/conf/graphite.wsgi')
+    $(safeMoveFile '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py')
 
     cd '/opt/graphite/webapp/graphite'
     python manage.py syncdb --noinput
