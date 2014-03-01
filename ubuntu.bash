@@ -20,7 +20,6 @@ function installDependencies
     apt-get install -y python-memcache
     apt-get install -y python-pip
     apt-get install -y python-pysqlite2
-    apt-get install -y rabbitmq-server
     apt-get install -y sqlite3
 }
 
