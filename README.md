@@ -19,5 +19,5 @@ USEFUL COMMANDS :
     To stop/start/restart apache2      : service apache2 <stop|start|restart>
     To stop/start/restart memcached    : service memcached <stop|start|restart>
     To stop/start/restart carbon-cache : <stop|start|restart> carbon-cache
-    To stop/start/restart all services : /Volumes/Data/Data/Git/github.com/gdbtek/setup-graphite/bin/<stop|start|restart>
+    To stop/start/restart all services : /Applications/setup-graphite/bin/<stop|start|restart>
 ```
