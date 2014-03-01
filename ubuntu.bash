@@ -45,6 +45,7 @@ function configApache()
     if [[ -f '/etc/apache2/sites-available/000-default.conf' ]]
     then
         local defaultConfigFileName='000-default.conf'
+        $(safeCopyFile "${appPath}/conf/apache2/apache2.conf" '/etc/apache2/apache2.conf')
     else
         local defaultConfigFileName='default'
     fi
@@ -64,10 +65,10 @@ function configGraphite()
 
     printHeader 'CONFIGURING GRAPHITE'
 
-    mv '/opt/graphite/conf/carbon.conf.example' '/opt/graphite/conf/carbon.conf'
-    mv '/opt/graphite/conf/storage-schemas.conf.example' '/opt/graphite/conf/storage-schemas.conf'
-    mv '/opt/graphite/conf/graphite.wsgi.example' '/opt/graphite/conf/graphite.wsgi'
-    mv '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py'
+    $(saveMoveFile '/opt/graphite/conf/carbon.conf.example' '/opt/graphite/conf/carbon.conf')
+    $(saveMoveFile '/opt/graphite/conf/storage-schemas.conf.example' '/opt/graphite/conf/storage-schemas.conf')
+    $(saveMoveFile '/opt/graphite/conf/graphite.wsgi.example' '/opt/graphite/conf/graphite.wsgi')
+    $(saveMoveFile '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py')
 
     cd '/opt/graphite/webapp/graphite'
     python manage.py syncdb --noinput
