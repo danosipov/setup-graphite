@@ -96,7 +96,7 @@ function restartServers()
     printHeader 'RESTARTING SERVERS'
 
     "${appPath}/bin/restart"
-    sleep 15
+    sleep 30
     "${appPath}/bin/restart"
 }
 
