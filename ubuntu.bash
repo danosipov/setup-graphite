@@ -81,6 +81,8 @@ function restartServers()
     printHeader 'RESTARTING SERVERS'
 
     "${appPath}/bin/restart"
+    sleep 15
+    "${appPath}/bin/restart"
 }
 
 function displayUsage()
