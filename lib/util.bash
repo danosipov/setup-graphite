@@ -1,26 +1,26 @@
 #!/bin/bash
 
-function escapeSearchPattern
+function escapeSearchPattern()
 {
     echo "$(echo "${1}" | sed "s@\[@\\\\[@g" | sed "s@\*@\\\\*@g" | sed "s@\%@\\\\%@g")"
 }
 
-function printHeader
+function printHeader()
 {
     echo -e "\n\033[1;33m>>>>>>>>>> \033[1;4;35m${1}\033[0m \033[1;33m<<<<<<<<<<\033[0m\n"
 }
 
-function error
+function error()
 {
     echo -e "\033[1;31m${1}\033[0m" 1>&2
 }
 
-function trimString
+function trimString()
 {
     echo "${1}" | sed -e 's/^ *//g' -e 's/ *$//g'
 }
 
-function isEmptyString
+function isEmptyString()
 {
     if [[ "$(trimString ${1})" = '' ]]
     then
@@ -30,7 +30,7 @@ function isEmptyString
     fi
 }
 
-function isValidEmail
+function isValidEmail()
 {
     local result=$(echo "${1}" | grep -E "^(([-a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~]+|(\"([][,:;<>\&@a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~-]|(\\\\[\\ \"]))+\"))\.)*([-a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~]+|(\"([][,:;<>\&@a-zA-Z0-9\!#\$%\&\'*+/=?^_\`{\|}~-]|(\\\\[\\ \"]))+\"))@\w((-|\w)*\w)*\.(\w((-|\w)*\w)*\.)*\w{2,4}$")
 
@@ -42,7 +42,7 @@ function isValidEmail
     fi
 }
 
-function checkRequireRootUser
+function checkRequireRootUser()
 {
     if [[ "$(whoami)" != 'root' ]]
     then
