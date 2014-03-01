@@ -27,12 +27,12 @@ function installGraphite
 {
     printHeader 'INSTALLING GRAPHITE'
 
+    pip install Twisted==11.1.0
     pip install carbon
+    pip install django-tagging
+    pip install django==1.5
     pip install graphite-web
     pip install whisper
-    pip install Twisted==11.1.0
-    pip install django==1.5
-    pip install django-tagging
 }
 
 function configApache
