@@ -2,32 +2,31 @@
 
 function installDependencies
 {
-    printHeader 'INSTALL DEPENDENCIES'
+    printHeader 'INSTALLING DEPENDENCIES'
 
     apt-get update
-    apt-get -y upgrade
+    apt-get upgrade -y
 
-    apt-get -y install apache2
-    apt-get -y install erlang-os-mon
-    apt-get -y install erlang-snmp
-    apt-get -y install libapache2-mod-python
-    apt-get -y install libapache2-mod-wsgi
-    apt-get -y install memcached
-    apt-get -y install python-cairo-dev
-    apt-get -y install python-dev
-    apt-get -y install python-ldap
-    apt-get -y install python-memcache
-    apt-get -y install python-pip
-    apt-get -y install python-pysqlite2
-    apt-get -y install rabbitmq-server
-    apt-get -y install sqlite3
-
-    apt-get -y install expect
+    apt-get install -y apache2
+    apt-get install -y erlang-os-mon
+    apt-get install -y erlang-snmp
+    apt-get install -y expect
+    apt-get install -y libapache2-mod-python
+    apt-get install -y libapache2-mod-wsgi
+    apt-get install -y memcached
+    apt-get install -y python-cairo-dev
+    apt-get install -y python-dev
+    apt-get install -y python-ldap
+    apt-get install -y python-memcache
+    apt-get install -y python-pip
+    apt-get install -y python-pysqlite2
+    apt-get install -y rabbitmq-server
+    apt-get install -y sqlite3
 }
 
 function installGraphite
 {
-    printHeader 'INSTALL GRAPHITE'
+    printHeader 'INSTALLING GRAPHITE'
 
     pip install carbon
     pip install graphite-web
@@ -39,7 +38,7 @@ function installGraphite
 
 function configApache
 {
-    printHeader 'CONFIG APACHE'
+    printHeader 'CONFIGURING APACHE'
 
     local oldWSGISocketPrefix="$(escapeSearchPattern 'WSGISocketPrefix run/wsgi')"
     local newWSGISocketPrefix="$(escapeSearchPattern 'WSGISocketPrefix /var/run/apache2/wsgi')"
@@ -49,32 +48,36 @@ function configApache
 
 function configGraphite
 {
-    printHeader 'CONFIG GRAPHITE'
+    local login="${1}"
+    local password="${2}"
+    local email="${3}"
+
+    printHeader 'CONFIGURING GRAPHITE'
 
     mv '/opt/graphite/conf/carbon.conf.example' '/opt/graphite/conf/carbon.conf'
     mv '/opt/graphite/conf/storage-schemas.conf.example' '/opt/graphite/conf/storage-schemas.conf'
     mv '/opt/graphite/conf/graphite.wsgi.example' '/opt/graphite/conf/graphite.wsgi'
+    mv '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py'
 
     cd '/opt/graphite/webapp/graphite'
     python manage.py syncdb --noinput
-    python manage.py createsuperuser --username="${1}" --email="${3}" --noinput
+    python manage.py createsuperuser --username="${login}" --email="${email}" --noinput
 
     expect << DONE
-        spawn python manage.py changepassword "${1}"
+        spawn python manage.py changepassword "${login}"
         expect "Password: "
-        send -- "${2}\r"
+        send -- "${password}\r"
         expect "Password (again): "
-        send -- "${2}\r"
+        send -- "${password}\r"
         expect eof
 DONE
 
-    mv '/opt/graphite/webapp/graphite/local_settings.py.example' '/opt/graphite/webapp/graphite/local_settings.py'
-    chown -R www-data:www-data '/opt/graphite/storage'
+    chown -R 'www-data:www-data' '/opt/graphite/storage'
 }
 
 function restartServers
 {
-    printHeader 'RESTART SERVERS'
+    printHeader 'RESTARTING SERVERS'
 
     "${appPath}/bin/restart"
 }
@@ -83,62 +86,29 @@ function displayUsage
 {
     local scriptName="$(basename ${0})"
 
-    echo -e "\033[1;35m"
+    echo -e "\033[1;33m"
     echo    "SYNOPSIS :"
-    echo -e "    ${scriptName} -h -l <LOGIN> -p <PASSWORD> -e <EMAIL>\n"
+    echo    "    ${scriptName} --help --login <LOGIN> --password <PASSWORD> --email <EMAIL>"
+    echo -e "\033[1;35m"
     echo    "DESCRIPTION :"
-    echo    "    -h    Help page"
-    echo    "    -l    Graphite Browser admin-user's login (require)"
-    echo    "    -p    Graphite Browser admin-user's password (require)"
-    echo    "    -e    Graphite Browser admin-user's email (require)"
+    echo    "    --help        Help page"
+    echo    "    --login       Graphite Browser admin-user's login (require)"
+    echo    "    --password    Graphite Browser admin-user's password (require)"
+    echo    "    --email       Graphite Browser admin-user's email (require)"
     echo -e "\033[1;36m"
     echo    "EXAMPLES :"
-    echo    "    ${scriptName} -h"
-    echo    "    ${scriptName} -l 'root' -p 'root' -e 'root@localhost.com'"
+    echo    "    ./${scriptName} --help"
+    echo    "    ./${scriptName} --login 'root' --password 'root' --email 'root@localhost.com'"
     echo -e "\033[0m"
 
-    exit 1
+    exit ${1}
 }
 
-function main
+function runInstallation()
 {
-    appPath="$(cd "$(dirname "${0}")" && pwd)"
-
-    source "${appPath}/lib/util.bash" || exit 1
-
-    while getopts ':hl:p:e:' option
-    do
-        case "${option}" in
-            h)
-               displayUsage
-               ;;
-            l)
-               local login="${OPTARG}"
-               ;;
-            p)
-               local password="${OPTARG}"
-               ;;
-            e)
-               local email="${OPTARG}"
-               ;;
-            *)
-               ;;
-        esac
-    done
-
-    OPTIND=1
-
-    if [[ "$(isEmptyString ${login})" = 'true' || "$(isEmptyString ${password})" = 'true' || "$(isEmptyString ${email})" = 'true' ]]
-    then
-        error 'ERROR: login, password, or email not found!'
-        displayUsage
-    fi
-
-    if [[ "$(isValidEmail ${email})" = 'false' ]]
-    then
-        error 'ERROR: invalid email!'
-        exit 1
-    fi
+    local login="${1}"
+    local password="${2}"
+    local email="${3}"
 
     checkRequireRootUser
 
@@ -149,6 +119,72 @@ function main
     configGraphite "${login}" "${password}" "${email}"
 
     restartServers
+}
+
+function main
+{
+    appPath="$(cd "$(dirname "${0}")" && pwd)"
+    source "${appPath}/lib/util.bash" || exit 1
+
+    local optCount=${#}
+
+    while [[ ${#} -gt 0 ]]
+    do
+        case "${1}" in
+            --help)
+                displayUsage 0
+                ;;
+            --login)
+                shift
+
+                if [[ ${#} -gt 0 ]]
+                then
+                    local login="$(trimString "${1}")"
+                fi
+
+                ;;
+            --password)
+                shift
+
+                if [[ ${#} -gt 0 ]]
+                then
+                    local password="$(trimString "${1}")"
+                fi
+
+                ;;
+            --email)
+                shift
+
+                if [[ ${#} -gt 0 ]]
+                then
+                    local email="$(trimString "${1}")"
+                fi
+
+                ;;
+            *)
+                shift
+                ;;
+        esac
+    done
+
+    if [[ "$(isEmptyString ${login})" = 'true' || "$(isEmptyString ${password})" = 'true' || "$(isEmptyString ${email})" = 'true' ]]
+    then
+        if [[ ${optCount} -gt 0 ]]
+        then
+            error '\nERROR: login, password, or email parameter not found!'
+            displayUsage 1
+        fi
+
+        displayUsage 0
+    fi
+
+    if [[ "$(isValidEmail ${email})" = 'false' ]]
+    then
+        error '\nERROR: invalid email!\n'
+        exit 1
+    fi
+
+    runInstallation "${login}" "${password}" "${email}"
 }
 
 main "${@}"
