@@ -107,6 +107,12 @@ function displayUsage()
     echo    "EXAMPLES :"
     echo    "    ./${scriptName} --help"
     echo    "    ./${scriptName} --login 'root' --password 'root' --email 'root@localhost.com'"
+    echo -e "\033[1;32m"
+    echo    "USEFUL COMMANDS :"
+    echo    "    To stop/start/restart apache2      : service apache2 <stop|start|restart>"
+    echo    "    To stop/start/restart memcached    : service memcached <stop|start|restart>"
+    echo    "    To stop/start/restart carbon-cache : <stop|start|restart> carbon-cache"
+    echo    "    To stop/start/restart all services : ${appPath}/bin/<stop|start|restart>"
     echo -e "\033[0m"
 
     exit ${1}
