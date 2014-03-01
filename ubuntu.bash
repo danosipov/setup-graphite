@@ -16,7 +16,6 @@ function installDependencies()
     apt-get install -y memcached
     apt-get install -y python-cairo-dev
     apt-get install -y python-dev
-    apt-get install -y python-ldap
     apt-get install -y python-memcache
     apt-get install -y python-pip
 }
