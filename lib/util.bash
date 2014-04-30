@@ -42,13 +42,19 @@ function isValidEmail()
     fi
 }
 
+function checkRequireUser()
+{
+    local requireUser="${1}"
+
+    if [[ "$(whoami)" != "${requireUser}" ]]
+    then
+        fatal "ERROR: please run this program as '${requireUser}' user!"
+    fi
+}
+
 function checkRequireRootUser()
 {
-    if [[ "$(whoami)" != 'root' ]]
-    then
-        error "ERROR: please run this program as 'root'"
-        exit 1
-    fi
+    checkRequireUser 'root'
 }
 
 function safeCopyFile()
