@@ -147,6 +147,7 @@ function runInstallation()
 function main()
 {
     appPath="$(cd "$(dirname "${0}")" && pwd)"
+
     source "${appPath}/lib/util.bash" || exit 1
 
     local optCount=${#}
