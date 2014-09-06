@@ -100,7 +100,7 @@ function restartServers()
 
 function displayUsage()
 {
-    local scriptName="$(basename ${0})"
+    local scriptName="$(basename "${BASH_SOURCE[0]}")"
 
     echo -e "\033[1;33m"
     echo    "SYNOPSIS :"
