@@ -33,6 +33,7 @@ function installGraphite()
     pip install Twisted==11.1.0
     pip install django==1.5
     pip install django-tagging
+    pip install pytz
 }
 
 function configApache()
